@@ -20,6 +20,8 @@ public class BallController : MonoBehaviour
 	public int count;
 	private bool isgrounded;
 	public Camera mainCamera;
+	public bool escape;
+	public Canvas pauseUI;
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
@@ -39,6 +41,7 @@ public class BallController : MonoBehaviour
 		horizAxis = Input.GetAxis("Horizontal");
 		vertAxis = Input.GetAxis("Vertical");
 		space = Input.GetKey("space");
+		escape = Input.GetKey(KeyCode.Escape);
     }
     private void OnCollisionStay(Collision collision)
     {
@@ -50,6 +53,10 @@ public class BallController : MonoBehaviour
     }
     void FixedUpdate()
 	{
+		if (escape && !pauseUI.GetComponent<PauseMenu>().paused)
+        {
+			pauseUI.GetComponent<PauseMenu>().Pause();
+        }
 		float moveHorizontal = horizAxis;
 		float moveVertical = vertAxis;
 		float cameraFacingX = mainCamera.transform.eulerAngles.x;
